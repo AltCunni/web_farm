@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Культурные растения</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+
+<style>
+    body {
+        background-color: rgba(115, 172, 169, 0.82);
+    }
+</style>
+<blockquote class="blockquote text-center"><h1>Культуры</h1></blockquote>
+
+<!-- Кнопка "Назад" -->
+<div class="text-center mb-3">
+    <a th:href="@{/menu}">
+        <button type="button" class="btn btn-secondary" style="border: 1px solid #373434;">
+            Назад
+        </button>
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-4">
+        <h4>Поиск культуры по любому критерию:</h4>
+        <form th:action="@{/manager/farms/}" method="get">
+            <input type="text" name="keyword" id="keyword" size="70" th:value="${keyword}" required/>
+            <input type="submit" class="btn btn-success btn-sm" style="border: 1px solid #373434;" value="Поиск"/>
+            <input type="button" class="btn btn-warning btn-sm" style="border: 1px solid #373434;" value="Очистить"
+                   id="btnClear" onclick="clearSearch()"/>
+        </form>
+    </div>
+</div>
+<a th:href="@{/manager/farms/sort}">
+    <button type="button" class="btn-info btn-sm" style="border: 1px solid #373434;">Сортировать по дате посадки культуры</button>
+</a>
+<a th:href="@{/manager/farms/hist}">
+    <button type="button" class="btn-info btn-sm" style="border: 1px solid #373434;">Показать гистограмму</button>
+</a>
+<a th:href="@{/manager/farms/table}">
+    <button type="button" class="btn-info btn-sm" style="border: 1px solid #373434;">Таблица</button>
+</a>
+
+<table id="1" class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th style="background-color: #73ACA9D1;" scope="col">ID</th>
+        <th style="background-color: rgba(96,142,140,0.82);" scope="col">Название культуры</th>
+        <th style="background-color: #73ACA9D1;" scope="col">ФИО фермера</th>
+        <th style="background-color: rgba(96,142,140,0.82);" scope="col">Дата посева</th>
+        <th style="background-color: #73ACA9D1;" scope="col">Дата сбора</th>
+        <th style="background-color: rgba(96,142,140,0.82);" scope="col">Количество в кг</th>
+        <th style="background-color: rgba(96,142,140,0.82);" scope="col">Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="farm : ${listFarm}">
+        <th scope="row" class="text-gray" th:text="${farm.id}">ID отсутствует</th>
+        <td class="text-gray" th:text="${farm.name_zerno}">Название культуры отсутствует</td>
+        <td class="text-gray" th:text="${farm.fio}">ФИО фермера отсутствует</td>
+        <td class="text-gray" th:text="${farm.data_posev}">Город посева отсутствует</td>
+        <td class="text-gray" th:text="${farm.data_sbor}">Дата сбора отсутствует </td>
+        <td class="text-gray" th:text="${farm.kolvo}">Количество отсутствует</td>
+        <td>
+            <a th:href="@{/manager/farms/edit/{id}(id=${farm.id})}">
+                <button type="button" class="btn btn-info">Редактировать</button>
+            </a>
+            <a th:href="@{/manager/farms/delete/{id}(id=${farm.id})}">
+                <button type="button" class="btn btn-danger">Удалить</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p class="text-gray">
+    <script type="text/javascript">
+        function getRowsColumn() {
+            let table = document.getElementById('1')
+            let tBody = table.querySelector('tbody')
+            const count = tBody.querySelectorAll('tr').length;
+            document.write('Количество: ' + count)
+        }
+
+        getRowsColumn()
+    </script>
+</p>
+<a th:href="@{/manager/farms/new}">
+    <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off"
+            style="border: 1px solid #373434;">
+        Добавить культуру
+    </button>
+</a>
+<script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/manager/farms/}]]";
+    }
+</script>
+
+</body>
+</html>
