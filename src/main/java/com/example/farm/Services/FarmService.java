@@ -25,20 +25,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
+/**
+ * Сервисный класс для управления фермерскими данными.
+ * Этот класс содержит бизнес-логику для работы с сущностью Farm.
+ */
 
 @Service
 public class FarmService {
     @Autowired
     private FarmRepository repo;
-
+/**
+ * Возвращает список всех ферм или список, отфильтрованный по ключевому слову.*/
     public List<Farm> listAll(String keyword) {
         if (keyword != null) {
             return repo.search(keyword);
         }
         return repo.findAll();
     }
-
+/**
+ * Сохраняет или обновляет информацию о ферме.*/
     public void save(Farm farm) {
         repo.save(farm);
     }
@@ -55,7 +60,13 @@ public class FarmService {
     public List<Farm> sortDate() {
         return repo.sort();
     }
-
+    /**
+     * Генерирует изображение гистограммы на основе данных о фермах.
+     *
+     * @param filePath путь к файлу, где будет сохранено изображение
+     * @return массив байтов, представляющий изображение гистограммы
+     * @throws IOException если произошла ошибка ввода-вывода
+     */
     public byte[] generateHistogramImage(String filePath) throws IOException {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -90,7 +101,11 @@ public class FarmService {
         ChartUtils.writeChartAsPNG(bos, chart, 800, 600);
         return bos.toByteArray();
     }
-
+    /**
+     * Возвращает данные для таблицы фермерских хозяйств.
+     *
+     * @return список объектов, представляющих данные для таблицы
+     */
 
     public List<Object[]> tableFarm () {
         return repo.forTable();
